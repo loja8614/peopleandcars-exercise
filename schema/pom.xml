@@ -7,7 +7,7 @@
 
 
     <parent>
-        <groupId>iuresti.training</groupId>
+        <groupId>training</groupId>
         <artifactId>people-and-cars</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -38,9 +38,9 @@
                                     <configOptions>
                                         <generateApis>true</generateApis>
                                         <generateModels>true</generateModels>
-                                        <apiPackage>iuresti.training.peopleandcars.controller
+                                        <apiPackage>training.peopleandcars.controller
                                         </apiPackage>
-                                        <modelPackage>iuresti.training.peopleandcars.modelapi
+                                        <modelPackage>training.peopleandcars.modelapi
                                         </modelPackage>
                                         <useRuntimeException>true</useRuntimeException>
                                         <booleanGetterPrefix>is</booleanGetterPrefix>
@@ -66,12 +66,12 @@
                                 </goals>
                                 <configuration>
                                     <outputDirectory>
-                                        ../service/src/main/java/iuresti/training/peopleandcars/modelapi
+                                        ../service/src/main/java/training/peopleandcars/modelapi
                                     </outputDirectory>
                                     <resources>
                                         <resource>
                                             <directory>
-                                                ${project.build.directory}/generated-sources/openapi/src/main/java/iuresti/training/peopleandcars/modelapi
+                                                ${project.build.directory}/generated-sources/openapi/src/main/java/training/peopleandcars/modelapi
                                             </directory>
                                             <excludes>
                                                 <exclude>ApiUtil.java</exclude>
@@ -88,12 +88,12 @@
                                 </goals>
                                 <configuration>
                                     <outputDirectory>
-                                        ../service/src/main/java/iuresti/training/peopleandcars/controller
+                                        ../service/src/main/java/training/peopleandcars/controller
                                     </outputDirectory>
                                     <resources>
                                         <resource>
                                             <directory>
-                                                ${project.build.directory}/generated-sources/openapi/src/main/java/iuresti/training/peopleandcars/controller
+                                                ${project.build.directory}/generated-sources/openapi/src/main/java/training/peopleandcars/controller
                                             </directory>
                                             <excludes>
                                                 <exclude>ApiUtil.java</exclude>
