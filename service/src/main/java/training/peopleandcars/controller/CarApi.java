@@ -5,15 +5,14 @@
  */
 package training.peopleandcars.controller;
 
-import training.peopleandcars.modelapi.Car;
-import training.peopleandcars.modelapi.People;
+import training.peopleandcars.model.modelapi.Car;
+import training.peopleandcars.model.modelapi.People;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import javax.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-08-22T19:22:29.543238700-05:00[America/Mexico_City]")
@@ -105,7 +104,7 @@ public interface CarApi {
         value = "/car/{carVin}",
         produces = { "application/json" }
     )
-    ResponseEntity<Optional<Car>> getCarByVin(
+    ResponseEntity<Car> getCarByVin(
          @PathVariable("carVin") String carVin
     );
 

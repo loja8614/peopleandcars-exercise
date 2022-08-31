@@ -1,15 +1,13 @@
 package training.peopleandcars.controller;
 
 import org.springframework.http.HttpStatus;
-import training.peopleandcars.exception.ModelNotFoundException;
-import training.peopleandcars.modelapi.Car;
-import training.peopleandcars.modelapi.People;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import training.peopleandcars.model.modelapi.Car;
+import training.peopleandcars.model.modelapi.People;
 
-import java.util.Optional;
 import java.util.UUID;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +22,7 @@ import javax.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-08-22T19:22:29.543238700-05:00[America/Mexico_City]")
 @Controller
+@RestControllerAdvice
 @RequestMapping("${openapi.peopleAndCars.base-path:/api}")
 public class PeopleApiController implements PeopleApi {
     private final NativeWebRequest request;
@@ -31,9 +30,9 @@ public class PeopleApiController implements PeopleApi {
     private PeopleService peopleService;
     private RegistryService registryService;
 
-    public PeopleApiController(NativeWebRequest request,PeopleService peopleService, RegistryService registryService) {
+    public PeopleApiController(PeopleService peopleService,RegistryService registryService,NativeWebRequest request) {
         this.peopleService = peopleService;
-        this.registryService = registryService;
+        this.registryService=registryService;
         this.request = request;
     }
 
@@ -44,12 +43,6 @@ public class PeopleApiController implements PeopleApi {
 
     @Override
     public ResponseEntity<People> deletePeople(UUID peopleId) {
-        Optional<People> people = peopleService.getById(peopleId);
-        if (registryService.getCarsByPeople(peopleId).size() != 0) {
-            throw new ModelNotFoundException("The person is assigned, it cannot be deleted");
-        }
-        if (!people.isPresent() || people.get().getId() == null)
-            throw new ModelNotFoundException("Person not found");
         peopleService.delete(peopleId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -65,10 +58,7 @@ public class PeopleApiController implements PeopleApi {
     }
 
     @Override
-    public ResponseEntity<Optional<People>> getPeopleById(UUID peopleId) {
-        Optional<People> people = peopleService.getById(peopleId);
-        if (!people.isPresent() || people.get().getId() == null)
-            throw new ModelNotFoundException("Person not found");
-        return new ResponseEntity(people, HttpStatus.OK);
+    public ResponseEntity<People> getPeopleById(UUID peopleId) {
+        return new ResponseEntity<>(peopleService.getById(peopleId), HttpStatus.OK);
     }
 }

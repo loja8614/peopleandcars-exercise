@@ -5,7 +5,7 @@
  */
 package training.peopleandcars.controller;
 
-import training.peopleandcars.modelapi.Registry;
+import training.peopleandcars.model.modelapi.Registry;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

@@ -1,15 +1,8 @@
-package training.peopleandcars.modelapi;
+package training.peopleandcars.model.modelapi;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.*;
-
-
 import javax.annotation.Generated;
 
 /**
@@ -17,28 +10,21 @@ import javax.annotation.Generated;
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-08-22T19:22:29.543238700-05:00[America/Mexico_City]")
-@Entity
-@Table(schema = "registry", name ="car")
 public class Car {
 
   @JsonProperty("vin")
-  @Id
   private String vin;
 
   @JsonProperty("brand")
-  @Column(name="brand")
   private String brand;
 
   @JsonProperty("color")
-  @Column(name="color")
   private String color;
 
   @JsonProperty("model")
-  @Column(name="model")
   private String model;
 
   @JsonProperty("year")
-  @Column(name="year")
   private Integer year;
 
   public Car(){}

@@ -5,10 +5,9 @@
  */
 package training.peopleandcars.controller;
 
-import training.peopleandcars.modelapi.Car;
-import training.peopleandcars.modelapi.People;
+import training.peopleandcars.model.modelapi.Car;
+import training.peopleandcars.model.modelapi.People;
 
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -107,7 +106,7 @@ public interface PeopleApi {
         value = "/people/{peopleId}",
         produces = { "application/json" }
     )
-    ResponseEntity<Optional<People>> getPeopleById(
+    ResponseEntity<People> getPeopleById(
          @PathVariable("peopleId") UUID peopleId
     );
 

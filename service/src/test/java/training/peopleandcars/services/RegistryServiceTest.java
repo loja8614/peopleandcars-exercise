@@ -1,14 +1,14 @@
 package training.peopleandcars.services;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import training.peopleandcars.modelapi.Car;
-import training.peopleandcars.modelapi.People;
-import training.peopleandcars.modelapi.Registry;
+import training.peopleandcars.model.mapper.ConverterMapper;
+import training.peopleandcars.model.modelDao.CarDao;
+import training.peopleandcars.model.modelDao.PeopleDao;
+import training.peopleandcars.model.modelDao.RegistryDao;
+import training.peopleandcars.model.modelapi.Car;
+import training.peopleandcars.model.modelapi.People;
+import training.peopleandcars.model.modelapi.Registry;
 import training.peopleandcars.repository.RegistryRepository;
 import training.peopleandcars.util.CarDataTest;
 import training.peopleandcars.util.PeopleDataTest;
@@ -19,25 +19,34 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
 class RegistryServiceTest {
-
-    @InjectMocks
-    RegistryServiceImpl registryService;
-
-    @Mock
-    RegistryRepository registryRepository;
 
     @Test
     void givenRegistry_whenSave_thenReturnRegistrySaved() {
         //given:
+        RegistryRepository registryRepository = Mockito.mock(RegistryRepository.class);
+        ConverterMapper converterMapper = Mockito.mock(ConverterMapper.class);
+        RegistryServiceImpl registryService = new RegistryServiceImpl(registryRepository, converterMapper);
+
         Car carMocked = CarDataTest.getMockCar();
         People peopleMocked = PeopleDataTest.getPeopleMocked();
         Registry registryMocked = new Registry();
         registryMocked.setId(1);
         registryMocked.setPeople(peopleMocked);
         registryMocked.setCar(carMocked);
-        Mockito.when(registryRepository.save(registryMocked)).thenReturn(registryMocked);
+
+        CarDao carDaoMocked = CarDataTest.getMockCarDao();
+        PeopleDao peopleDaoMocked = PeopleDataTest.getPeopleDaoMocked();
+
+        RegistryDao registryMockedDao = new RegistryDao();
+        registryMockedDao.setId(1);
+        registryMockedDao.setPeople(peopleDaoMocked);
+        registryMockedDao.setCar(carDaoMocked);
+
+        Mockito.when(converterMapper.toRegistry(registryMockedDao)).thenReturn(registryMocked);
+        Mockito.when(converterMapper.toRegistryDao(registryMocked)).thenReturn(registryMockedDao);
+        Mockito.when(registryRepository.save(registryMockedDao)).thenReturn(registryMockedDao);
+
         //when
         Registry registrySaved = registryService.save(registryMocked);
         //then
@@ -48,51 +57,60 @@ class RegistryServiceTest {
     @Test
     void givenPeopleId_whenGetCars_thenGetTwoCars() {
         //given:
+        RegistryRepository registryRepository = Mockito.mock(RegistryRepository.class);
+        ConverterMapper converterMapper = Mockito.mock(ConverterMapper.class);
+        RegistryServiceImpl registryService = new RegistryServiceImpl(registryRepository, converterMapper);
+
         UUID idPeople = UUID.fromString("32611be5-33f6-4e5c-996d-9ad88bcb2bce");
-        List<Registry> lstRegistryMocked = new ArrayList<>();
-        People peopleMocked = PeopleDataTest.getPeopleMocked();
-        List<Car> lstCarMocked = CarDataTest.getAllCarsMocked();
+        List<RegistryDao> lstRegistryMocked = new ArrayList<>();
+        PeopleDao peopleDaoMocked = PeopleDataTest.getPeopleDaoMocked();
+        List<CarDao> lstCarMocked = CarDataTest.getAllCarsDaoMocked();
         int i = 1;
-        for (Car car : lstCarMocked
+        for (CarDao car : lstCarMocked
         ) {
-            Registry registryMock=new Registry(i,peopleMocked,car);
+            RegistryDao registryMock = new RegistryDao(i, peopleDaoMocked, car);
             lstRegistryMocked.add(registryMock);
             i++;
         }
 
+        Mockito.when(converterMapper.toCar(lstCarMocked.get(0))).thenReturn(CarDataTest.getMockCar());
         Mockito.when(registryRepository.findByPeopleId(idPeople)).thenReturn(lstRegistryMocked);
 
         //when:
         List<Car> lstCars = registryService.getCarsByPeople(idPeople);
 
         //then:
-        assertEquals(3,lstCars.size());
+        assertEquals(3, lstCars.size());
 
     }
 
     @Test
     void givenCarVin_whenGetPeopleByCar_thenPeopleRegistry() {
         //given:
+        RegistryRepository registryRepository = Mockito.mock(RegistryRepository.class);
+        ConverterMapper converterMapper = Mockito.mock(ConverterMapper.class);
+        RegistryServiceImpl registryService = new RegistryServiceImpl(registryRepository, converterMapper);
+
         String vin = "VINID";
-        List<Registry> lstRegistryMocked = new ArrayList<>();
-        List<People> lstPeopleMocked = new ArrayList<>();
-        lstPeopleMocked.add(PeopleDataTest.getPeopleMocked());
-        Car carMocked = CarDataTest.getMockCar();
+        List<RegistryDao> lstRegistryMocked = new ArrayList<>();
+        List<PeopleDao> lstPeopleMocked = new ArrayList<>();
+        lstPeopleMocked.add(PeopleDataTest.getPeopleDaoMocked());
+        CarDao carMocked = CarDataTest.getMockCarDao();
         int i = 1;
-        for (People people : lstPeopleMocked
+        for (PeopleDao peopleDao : lstPeopleMocked
         ) {
-            Registry registryMock=new Registry(i,people,carMocked);
+            RegistryDao registryMock = new RegistryDao(i, peopleDao, carMocked);
             lstRegistryMocked.add(registryMock);
             i++;
         }
-
+        Mockito.when(converterMapper.toPeople(lstRegistryMocked.get(0).getPeople())).thenReturn(PeopleDataTest.getPeopleMocked());
         Mockito.when(registryRepository.findByCarVin(vin)).thenReturn(lstRegistryMocked);
 
         //when:
         List<People> lstPeopleByCar = registryService.getPeopleByCar(vin);
 
         //then:
-        assertEquals(1,lstPeopleByCar.size());
+        assertEquals(1, lstPeopleByCar.size());
 
     }
 }

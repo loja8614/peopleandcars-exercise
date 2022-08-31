@@ -1,8 +1,8 @@
 package training.peopleandcars.services;
 
-import training.peopleandcars.modelapi.Car;
-import training.peopleandcars.modelapi.People;
-import training.peopleandcars.modelapi.Registry;
+import training.peopleandcars.model.modelapi.Car;
+import training.peopleandcars.model.modelapi.People;
+import training.peopleandcars.model.modelapi.Registry;
 
 import java.util.List;
 import java.util.UUID;
