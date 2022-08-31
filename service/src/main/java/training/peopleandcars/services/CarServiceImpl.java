@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Supplier;
 
 
 @Service
@@ -49,9 +49,30 @@ public class CarServiceImpl implements CarService {
     }
 
     public Car getById(String vin) {
-        Optional<CarDao> carDao = carRepository.findById(vin);
-        if (carDao == null)
-            throw new ModelNotFoundException("Car not found");
-        return converterMapper.toCar(carDao.get());
+        CarDao carDao = carRepository.findById(vin).orElseThrow(() -> new  ModelNotFoundException("Car not found"));
+        return converterMapper.toCar(carDao);
+    }
+    public Car getById2(String vin) {
+
+        CarDao carDao = carRepository.findById(vin).orElseThrow(new Supplier<ModelNotFoundException>() {
+            @Override
+            public ModelNotFoundException get() {
+                return new  ModelNotFoundException("Car not found");
+            }
+        });
+        return converterMapper.toCar(carDao);
+    }
+    public Car getById3(String vin) {
+        CarNotFound exception= new CarNotFound();
+        CarDao carDao = carRepository.findById(vin).orElseThrow(exception);
+        return converterMapper.toCar(carDao);
+    }
+}
+
+class CarNotFound implements Supplier<ModelNotFoundException> {
+
+    @Override
+    public ModelNotFoundException get() {
+        return new  ModelNotFoundException("Car not found");
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.Valid;
 import javax.annotation.Generated;
+import javax.validation.constraints.NotNull;
 
 /**
  * Registry
@@ -39,6 +40,7 @@ public class Registry {
    * @return id
   */
   @Valid
+  @NotNull
   public Integer getId() {
     return id;
   }
@@ -56,7 +58,8 @@ public class Registry {
    * Get people
    * @return people
   */
-  @Valid 
+  @Valid
+  @NotNull
   public People getPeople() {
     return people;
   }
@@ -74,7 +77,8 @@ public class Registry {
    * Get car
    * @return car
   */
-  @Valid 
+  @Valid
+  @NotNull
   public Car getCar() {
     return car;
   }

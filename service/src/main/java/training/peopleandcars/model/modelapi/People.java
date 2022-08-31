@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 import javax.validation.Valid;
 import javax.annotation.Generated;
+import javax.validation.constraints.NotNull;
 
 /**
  * People
@@ -37,7 +38,7 @@ public class People {
     this.gender = gender;
     this.email = email;
   }
-
+  @NotNull
   public People id(UUID id) {
     this.id = id;
     return this;

@@ -1,7 +1,6 @@
 package training.peopleandcars.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import training.peopleandcars.model.modelapi.Registry;
 
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import javax.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-08-22T19:22:29.543238700-05:00[America/Mexico_City]")
 @Controller
-@RestControllerAdvice
 @RequestMapping("${openapi.peopleAndCars.base-path:/api}")
 public class RegistryApiController implements RegistryApi {
 
@@ -32,6 +30,6 @@ public class RegistryApiController implements RegistryApi {
 
     @Override
     public ResponseEntity<Registry> createRegistryCarPeople(@Valid Registry registry) {
-        return new ResponseEntity(registryService.save(registry), HttpStatus.CREATED);
+        return new ResponseEntity(registryService.save(registry), HttpStatus.OK);
     }
 }

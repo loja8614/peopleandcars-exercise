@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,10 +49,8 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     public People getById(UUID id) {
-        Optional<PeopleDao> peopleDao = personRepository.findById(id);
-        if (peopleDao == null)
-            throw new ModelNotFoundException("Person not found");
-        return converterMapper.toPeople(peopleDao.get());
+        PeopleDao peopleDao = personRepository.findById(id).orElseThrow( ()-> new ModelNotFoundException("Person not found"));
+        return converterMapper.toPeople(peopleDao);
     }
 
 }

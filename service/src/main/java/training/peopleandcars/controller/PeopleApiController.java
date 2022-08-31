@@ -1,7 +1,6 @@
 package training.peopleandcars.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import training.peopleandcars.model.modelapi.Car;
 import training.peopleandcars.model.modelapi.People;
 
@@ -22,7 +21,6 @@ import javax.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-08-22T19:22:29.543238700-05:00[America/Mexico_City]")
 @Controller
-@RestControllerAdvice
 @RequestMapping("${openapi.peopleAndCars.base-path:/api}")
 public class PeopleApiController implements PeopleApi {
     private final NativeWebRequest request;

@@ -62,5 +62,28 @@ class RegistryControllerTest {
         assertEquals(outputJson,inputJson);
         assertEquals(HttpStatus.CREATED.value(),response.getStatus());
     }
+    @Test
+    void givenCarWithoutVinAndPeopleWithoutId_whenCreateRelation_thenReturnBadRequest() throws Exception {
+
+        // given:
+        Registry registryMocked = new Registry(null,null,null);
+        String inputJson = MapperJson.mapToJson(registryMocked);
+
+        String URI = "http://localhost:8080/api/registry";
+        Mockito.when(registryService.save(registryMocked)).thenReturn(null);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(URI)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(inputJson)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // when:
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        //then:
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    }
 
 }
